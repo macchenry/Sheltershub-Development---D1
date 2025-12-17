@@ -8,6 +8,11 @@ import AdvertSpace from './components/AdvertSpace';
 import ImageSlider from './components/ImageSlider';
 import Footer from './components/Footer';
 import AllProperties from './components/AllProperties';
+import ForRentPage from './components/ForRentPage';
+import ForSalePage from './components/ForSalePage';
+import AgentsPage from './components/AgentsPage';
+import SingleAgentPage from './components/SingleAgentPage';
+import ReportAgentPage from './components/ReportAgentPage';
 import LoginPage from './components/LoginPage';
 import SingleProperty from './components/SingleProperty';
 import AddPropertyPage from './components/AddPropertyPage';
@@ -168,6 +173,20 @@ const App: React.FC = () => {
       );
     }
 
+    if (currentPage === 'for-rent') {
+      return <ForRentPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage === 'for-sale') {
+      return <ForSalePage onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage === 'agents') {
+      return <AgentsPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage === 'agent-detail') return <SingleAgentPage onNavigate={handleNavigate} />;
+    if (currentPage === 'report-agent') return <ReportAgentPage onNavigate={handleNavigate} />;
     if (currentPage === 'property-detail') return <SingleProperty onNavigate={handleNavigate} />;
     if (currentPage === 'add-property') return <AddPropertyPage onNavigate={handleNavigate} />;
     if (currentPage === 'favorites') return <FavoritesPage onNavigate={handleNavigate} />;

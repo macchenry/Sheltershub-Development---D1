@@ -10,13 +10,13 @@ const FilterSidebar: React.FC = () => {
       {/* Top Tabs */}
       <div className="flex space-x-6 mb-6 text-sm font-medium border-b border-gray-100 pb-2">
         <button 
-            className={`${activeTab === 'For Rent' ? 'text-[#C08A38]' : 'text-gray-500 hover:text-gray-800'}`}
+            className={`${activeTab === 'For Rent' ? 'text-[#0A2B4C]' : 'text-gray-500 hover:text-gray-800'}`}
             onClick={() => setActiveTab('For Rent')}
         >
             For Rent
         </button>
         <button 
-            className={`${activeTab === 'For Sale' ? 'text-[#C08A38]' : 'text-gray-500 hover:text-gray-800'}`}
+            className={`${activeTab === 'For Sale' ? 'text-[#0A2B4C]' : 'text-gray-500 hover:text-gray-800'}`}
             onClick={() => setActiveTab('For Sale')}
         >
             For Sale
@@ -28,7 +28,7 @@ const FilterSidebar: React.FC = () => {
         <input 
           type="text" 
           placeholder="Search by keyword..." 
-          className="w-full border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-[#C08A38] text-gray-700 placeholder-gray-400"
+          className="w-full border border-gray-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-[#0A2B4C] text-gray-700 placeholder-gray-400"
         />
       </div>
 
@@ -61,9 +61,9 @@ const FilterSidebar: React.FC = () => {
       <div className="mb-6">
         <label className="block text-sm text-gray-600 mb-2">Price</label>
         <div className="relative h-1.5 bg-gray-200 rounded-full my-4">
-            <div className="absolute left-0 w-1/3 h-full bg-[#C08A38] rounded-full"></div>
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#C08A38] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
-            <div className="absolute left-1/3 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#C08A38] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
+            <div className="absolute left-0 w-1/3 h-full bg-[#0A2B4C] rounded-full"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#0A2B4C] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
+            <div className="absolute left-1/3 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#0A2B4C] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
         </div>
         <div className="flex justify-between text-xs text-gray-500 font-medium">
             <span>$0</span>
@@ -75,9 +75,9 @@ const FilterSidebar: React.FC = () => {
       <div className="mb-6">
         <label className="block text-sm text-gray-600 mb-2">Size</label>
         <div className="relative h-1.5 bg-gray-200 rounded-full my-4">
-            <div className="absolute left-0 w-2/3 h-full bg-[#C08A38] rounded-full"></div>
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#C08A38] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
-            <div className="absolute left-2/3 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#C08A38] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
+            <div className="absolute left-0 w-2/3 h-full bg-[#0A2B4C] rounded-full"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#0A2B4C] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
+            <div className="absolute left-2/3 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-[#0A2B4C] rounded-full border-2 border-white shadow cursor-pointer hover:scale-110 transition-transform"></div>
         </div>
         <div className="flex justify-between text-xs text-gray-500 font-medium">
             <span>0ft²</span>
@@ -96,14 +96,14 @@ const FilterSidebar: React.FC = () => {
         </div>
         <div>
             <label className="block text-sm text-gray-600 mb-2">Bathrooms</label>
-             <input type="text" placeholder="Placeholder" className="w-full border border-gray-300 rounded px-3 py-2.5 text-sm focus:outline-none focus:border-[#C08A38] text-gray-700 placeholder-gray-400" />
+             <input type="text" placeholder="Placeholder" className="w-full border border-gray-300 rounded px-3 py-2.5 text-sm focus:outline-none focus:border-[#0A2B4C] text-gray-700 placeholder-gray-400" />
         </div>
       </div>
 
       {/* Advanced Features */}
       <div className="mb-8">
-        <button className="flex items-center text-sm font-bold text-[#C08A38] mb-4 hover:text-[#a07030] transition-colors">
-            <span className="mr-2 rounded-full border border-[#C08A38] w-4 h-4 flex items-center justify-center text-xs leading-none pb-0.5">-</span>
+        <button className="flex items-center text-sm font-bold text-[#0A2B4C] mb-4 hover:text-[#08223c] transition-colors">
+            <span className="mr-2 rounded-full border border-[#0A2B4C] w-4 h-4 flex items-center justify-center text-xs leading-none pb-0.5">-</span>
             Advanced features
         </button>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-2">
@@ -122,7 +122,7 @@ const FilterSidebar: React.FC = () => {
                     <div className="relative flex items-center">
                         <input 
                             type="checkbox" 
-                            className="peer h-4 w-4 border-2 border-gray-300 rounded text-[#C08A38] focus:ring-[#C08A38] transition-colors cursor-pointer checked:border-[#C08A38]" 
+                            className="peer h-4 w-4 border-2 border-gray-300 rounded text-[#0A2B4C] focus:ring-[#0A2B4C] transition-colors cursor-pointer checked:border-[#0A2B4C]" 
                             defaultChecked={['Balcony', 'Central Heating', 'Fireplace', 'Parking', 'Garage'].includes(item)} 
                         />
                     </div>
@@ -133,7 +133,7 @@ const FilterSidebar: React.FC = () => {
       </div>
 
       {/* Search Button */}
-      <button className="w-full bg-[#C08A38] text-white font-medium text-lg py-3 rounded shadow-sm hover:bg-[#a07030] transition-colors duration-200">
+      <button className="w-full bg-[#0A2B4C] text-white font-medium text-lg py-3 rounded shadow-sm hover:bg-[#08223c] transition-colors duration-200">
         Search
       </button>
 

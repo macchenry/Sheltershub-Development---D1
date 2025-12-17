@@ -80,8 +80,22 @@ const generateProperties = (startId: number, count: number): Property[] => {
 }
 
 
-export const featuredProperties: Property[] = generateProperties(10, 6).map(p => ({ ...p, isPremium: true }));
-export const latestProperties: Property[] = generateProperties(16, 6);
+export const featuredProperties: Property[] = generateProperties(10, 6).map((p, index) => {
+    // Explicitly set the 2nd property (Index 1) to SOLD for demonstration
+    if (index === 1) {
+        return { ...p, isPremium: true, status: PropertyStatus.Sold };
+    }
+    return { ...p, isPremium: true };
+});
+
+export const latestProperties: Property[] = generateProperties(16, 6).map((p, index) => {
+    // Explicitly set the 4th property (Index 3) to SOLD for demonstration
+    if (index === 3) {
+        return { ...p, status: PropertyStatus.Sold };
+    }
+    return p;
+});
+
 export const allPropertiesList: Property[] = generateProperties(22, 12); // Generate 12 properties for the listing page
 
 

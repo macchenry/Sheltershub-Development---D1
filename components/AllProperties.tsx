@@ -6,7 +6,7 @@ import { allPropertiesList } from '../constants';
 
 const Pagination: React.FC = () => (
   <div className="flex justify-center mt-12 gap-2">
-    <button className="w-10 h-10 flex items-center justify-center rounded bg-[#C08A38] text-white font-semibold shadow-sm">1</button>
+    <button className="w-10 h-10 flex items-center justify-center rounded bg-[#0A2B4C] text-white font-semibold shadow-sm">1</button>
     <button className="w-10 h-10 flex items-center justify-center rounded bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold transition-colors">2</button>
     <button className="w-10 h-10 flex items-center justify-center rounded bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold transition-colors">3</button>
     <button className="w-10 h-10 flex items-center justify-center rounded bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold transition-colors">...</button>
@@ -24,7 +24,7 @@ const ActiveFilterPill: React.FC<{ label: string }> = ({ label }) => (
 );
 
 const SortButton: React.FC<{ label: string; active?: boolean; direction?: 'up' | 'down' }> = ({ label, active, direction }) => (
-    <button className={`px-4 py-2 text-sm border border-gray-300 -ml-px first:ml-0 first:rounded-l last:rounded-r transition-colors flex items-center gap-2 ${active ? 'bg-[#C08A38] text-white border-[#C08A38] z-10' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+    <button className={`px-4 py-2 text-sm border border-gray-300 -ml-px first:ml-0 first:rounded-l last:rounded-r transition-colors flex items-center gap-2 ${active ? 'bg-[#0A2B4C] text-white border-[#0A2B4C] z-10' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
         {label}
         {direction && (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -44,7 +44,7 @@ const AllProperties: React.FC<{ onNavigate: (page: string) => void }> = ({ onNav
         <div className="bg-white border-b border-gray-200">
              <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center text-sm text-gray-500">
-                    <button onClick={() => onNavigate('home')} className="hover:text-[#C08A38] transition-colors">Home</button>
+                    <button onClick={() => onNavigate('home')} className="hover:text-[#0A2B4C] transition-colors">Home</button>
                     <span className="mx-2">/</span>
                     <span className="text-gray-900 font-medium">Properties</span>
                     <span className="mx-2">/</span>

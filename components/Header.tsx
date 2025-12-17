@@ -19,11 +19,13 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home' }) => {
         if (onNavigate) {
             if (linkName === 'Home') onNavigate('home');
             else if (linkName === 'All Properties') onNavigate('all-properties');
+            else if (linkName === 'For Rent') onNavigate('for-rent');
+            else if (linkName === 'For Sale') onNavigate('for-sale');
             else if (linkName === 'Agencies') onNavigate('agencies');
+            else if (linkName === 'Agents') onNavigate('agents');
             else if (linkName === 'Developers') onNavigate('developers');
             else if (linkName === 'Blog') onNavigate('blog');
             else if (linkName === 'Contact') onNavigate('contact');
-            // Agents main links fall through for now or can be added later
         }
     };
 
@@ -134,7 +136,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home' }) => {
                             key={link.name} 
                             href={link.href} 
                             onClick={(e) => handleNavClick(e, link.name)}
-                            className={`${(link.name === 'Home' && activePage === 'home') || (link.name === 'All Properties' && activePage === 'all-properties') || (link.name === 'Blog' && activePage === 'blog') || (link.name === 'Contact' && activePage === 'contact') ? 'text-brand-orange' : 'text-gray-800'} hover:text-brand-orange font-semibold text-base transition-colors h-full flex items-center`}
+                            className={`${(link.name === 'Home' && activePage === 'home') || (link.name === 'All Properties' && activePage === 'all-properties') || (link.name === 'For Rent' && activePage === 'for-rent') || (link.name === 'For Sale' && activePage === 'for-sale') || (link.name === 'Blog' && activePage === 'blog') || (link.name === 'Contact' && activePage === 'contact') ? 'text-brand-orange' : 'text-gray-800'} hover:text-brand-orange font-semibold text-base transition-colors h-full flex items-center`}
                         >
                             {link.name}
                         </a>

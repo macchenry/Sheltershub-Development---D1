@@ -70,20 +70,23 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
   };
 
   // Mock Data for the selected property
+  // ID 11 is forced to be SOLD in constants.ts
+  const isSoldDemo = propertyId === 11;
+
   const property = {
     id: propertyId || 10,
-    title: "Luxury Villa with Panoramic Ocean Views",
-    address: "123 Coastal Highway, Malibu, CA 90265",
-    priceGHS: 18500000,
-    priceUSD: 1250000,
+    title: isSoldDemo ? "Modern Family Home (SOLD)" : "Luxury Villa with Panoramic Ocean Views",
+    address: isSoldDemo ? "45 Airport Residential Area, Accra" : "123 Coastal Highway, Malibu, CA 90265",
+    priceGHS: isSoldDemo ? 2500000 : 18500000,
+    priceUSD: isSoldDemo ? 210000 : 1250000,
     description: "Experience the pinnacle of luxury living in this stunning modern family home. Nestled in a quiet, tree-lined street, this property offers a perfect blend of contemporary design and comfort. The spacious open-plan living area is flooded with natural light, featuring high ceilings and premium finishes throughout.\n\nThe gourmet kitchen is equipped with state-of-the-art appliances, custom cabinetry, and a large island, making it a chef's dream. Step outside to your private oasis, complete with a landscaped garden and a sparkling swimming pool, perfect for entertaining guests or enjoying a quiet evening with family.",
     type: "House",
     propertyTypeDetail: "Detached Villa",
     usage: "Residential",
     region: "Greater Accra",
     city: "Accra",
-    neighborhood: "Cantonments",
-    status: "For Sale",
+    neighborhood: isSoldDemo ? "Airport Residential" : "Cantonments",
+    status: isSoldDemo ? "Sold" : "For Sale",
     isPremium: true,
     bedrooms: 5,
     bathrooms: 4,
@@ -92,7 +95,7 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
     yearBuilt: 2022,
     listedBy: "SheltersHub Agency",
     developer: "Prestige Homes",
-    availability: "Immediately",
+    availability: isSoldDemo ? "Sold" : "Immediately",
     images: [
       "https://i.ibb.co/dwXy9qMp/Carousel-Image-1.jpg",
       "https://i.ibb.co/jvXSSRTm/Carousel-Image-2.jpg",
