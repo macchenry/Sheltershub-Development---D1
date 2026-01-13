@@ -1,5 +1,5 @@
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -10,8 +10,47 @@ interface AddPropertyPageProps {
 const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
   const [images, setImages] = useState<string[]>([]);
   const [areaUnit, setAreaUnit] = useState('sq ft');
+  
+  // Multi-select Property Type State
+  const [selectedPropertyTypes, setSelectedPropertyTypes] = useState<string[]>([]);
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState(false);
+  const typeDropdownRef = useRef<HTMLDivElement>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
+
+  const propertyTypesList = [
+      'House', 
+      'Apartment', 
+      'Commercial', 
+      'Land', 
+      'Office Space', 
+      'Warehouse', 
+      'Townhouse', 
+      'Villa', 
+      'Condo'
+  ];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+          if (typeDropdownRef.current && !typeDropdownRef.current.contains(event.target as Node)) {
+              setIsTypeDropdownOpen(false);
+          }
+      };
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+      };
+  }, []);
+
+  const handleTypeToggle = (type: string) => {
+      if (selectedPropertyTypes.includes(type)) {
+          setSelectedPropertyTypes(selectedPropertyTypes.filter(t => t !== type));
+      } else {
+          setSelectedPropertyTypes([...selectedPropertyTypes, type]);
+      }
+  };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -56,7 +95,8 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
   const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       // Logic to submit
-      alert(`Property posted successfully! Size recorded in ${areaUnit}.`);
+      const typesString = selectedPropertyTypes.length > 0 ? selectedPropertyTypes.join(', ') : 'None';
+      alert(`Property posted successfully! \nType(s): ${typesString} \nSize recorded in ${areaUnit}.`);
       onNavigate('all-properties');
   };
 
@@ -81,15 +121,41 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Property Title <span className="text-red-500">*</span></label>
                         <input type="text" required placeholder="e.g. Luxury Villa with Pool" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]" />
                     </div>
-                    <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Property Type</label>
-                        <select className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]">
-                            <option>House</option>
-                            <option>Apartment</option>
-                            <option>Commercial</option>
-                            <option>Land</option>
-                        </select>
+                    
+                    {/* Multi-Select Property Type */}
+                    <div className="relative" ref={typeDropdownRef}>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Property Type(s)</label>
+                        <div
+                            onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
+                            className={`w-full border ${isTypeDropdownOpen ? 'border-[#F9A826]' : 'border-gray-300'} rounded-lg px-4 py-3 text-sm focus:outline-none cursor-pointer flex justify-between items-center bg-white`}
+                        >
+                            <span className={`truncate ${selectedPropertyTypes.length === 0 ? 'text-gray-500' : 'text-gray-900'}`}>
+                                {selectedPropertyTypes.length > 0 ? selectedPropertyTypes.join(', ') : 'Select Property Type(s)'}
+                            </span>
+                            <svg className={`w-4 h-4 text-gray-500 transition-transform ${isTypeDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+
+                        {isTypeDropdownOpen && (
+                            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                {propertyTypesList.map(type => (
+                                    <div
+                                        key={type}
+                                        onClick={() => handleTypeToggle(type)}
+                                        className="px-4 py-2 hover:bg-gray-50 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedPropertyTypes.includes(type)}
+                                            readOnly
+                                            className="w-4 h-4 text-[#F9A826] border-gray-300 rounded focus:ring-[#F9A826]"
+                                        />
+                                        <span className="text-sm text-gray-700">{type}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
+
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-2">Status</label>
                         <select className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]">
