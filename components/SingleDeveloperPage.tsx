@@ -45,6 +45,8 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
     window.scrollTo(0, 0);
   }, []);
 
+  const developerName = "Empire Builders";
+
   return (
     <div className="bg-gray-50 min-h-screen font-sans">
       <Header onNavigate={onNavigate} activePage="developers" />
@@ -57,7 +59,7 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
                 <span className="mx-2">/</span>
                 <button onClick={() => onNavigate('developers')} className="hover:text-[#F9A826] transition-colors">Developers</button>
                 <span className="mx-2">/</span>
-                <span className="text-gray-900 font-medium">Empire Builders</span>
+                <span className="text-gray-900 font-medium">{developerName}</span>
             </div>
         </div>
       </div>
@@ -68,12 +70,12 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 md:p-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
                 <div className="w-32 h-32 md:w-48 md:h-48 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-                     <img src="https://i.ibb.co/dwXy9qMp/Carousel-Image-1.jpg" alt="Empire Builders Logo" className="w-full h-full object-cover" />
+                     <img src="https://i.ibb.co/dwXy9qMp/Carousel-Image-1.jpg" alt={`${developerName} Logo`} className="w-full h-full object-cover" />
                 </div>
                 
                 <div className="flex-grow text-center md:text-left space-y-4">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-bold text-[#0A2B4C] mb-2">Empire Builders</h1>
+                        <h1 className="text-3xl md:text-4xl font-bold text-[#0A2B4C] mb-2">{developerName}</h1>
                         <p className="text-gray-500 flex items-center justify-center md:justify-start gap-1 text-lg">
                              <svg className="w-5 h-5 text-[#F9A826]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                              Accra, Ghana
@@ -121,7 +123,7 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
 
         {/* 2. Developer Description */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 md:p-8">
-            <h3 className="text-2xl font-bold text-[#0A2B4C] mb-4 border-b border-gray-100 pb-3">About Empire Builders</h3>
+            <h3 className="text-2xl font-bold text-[#0A2B4C] mb-4 border-b border-gray-100 pb-3">About {developerName}</h3>
             <div className="text-gray-600 leading-relaxed space-y-4 text-base">
                 <p>
                     Empire Builders is a premier real estate development company committed to reshaping the landscape of modern living in Ghana. Since our inception in 2010, we have been at the forefront of delivering high-quality residential and commercial properties that blend aesthetic elegance with functional design.
@@ -135,7 +137,7 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
         {/* 3. Developer Projects Section */}
         <div>
              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-bold text-[#0A2B4C]">Projects by this Developer</h3>
+                <h3 className="text-2xl font-bold text-[#0A2B4C]">Projects by {developerName}</h3>
              </div>
              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project) => (
@@ -172,7 +174,7 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
         {/* 4. Developer Properties Section */}
         <div>
             <div className="flex justify-between items-end mb-6">
-                <h3 className="text-2xl font-bold text-[#0A2B4C]">Properties Listed by Empire Builders</h3>
+                <h3 className="text-2xl font-bold text-[#0A2B4C]">Properties Listed by {developerName}</h3>
                 <button 
                     onClick={() => onNavigate('all-properties')}
                     className="hidden sm:block text-[#F9A826] font-semibold hover:underline"
@@ -235,7 +237,7 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, u
 
         {/* 6. Reviews Section */}
         <div className="max-w-4xl">
-            <ReviewsSection targetName="Empire Builders" userRole={userRole} />
+            <ReviewsSection targetName={developerName} userRole={userRole} />
         </div>
 
       </main>

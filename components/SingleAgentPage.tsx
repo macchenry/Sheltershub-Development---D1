@@ -17,10 +17,15 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate, userRole 
     window.scrollTo(0, 0);
   }, []);
 
+  // Mock Agent Data with explicit relationship structure
   const agent = {
     name: "Sarah Jenkins",
     title: "Senior Sales Associate",
-    agency: "Prime Real Estate",
+    affiliation: {
+        type: 'Agency', // 'Agency' | 'Developer' | 'Independent'
+        name: 'Prime Real Estate', // Name of Agency or Developer
+        link: 'agency-detail' // Navigation target
+    },
     location: "Accra, Greater Accra",
     image: "https://randomuser.me/api/portraits/women/44.jpg",
     phone: "+233 24 000 0001",
@@ -72,10 +77,23 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate, userRole 
                                 <h1 className="text-3xl font-bold text-[#0A2B4C]">{agent.name}</h1>
                                 <p className="text-gray-600 font-medium">{agent.title}</p>
                                 <div className="flex flex-col md:flex-row items-center md:items-start gap-1 md:gap-4 mt-1 text-sm text-gray-500">
-                                    <span className="flex items-center gap-1">
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                        <button onClick={() => onNavigate('agency-detail')} className="hover:text-[#F9A826] transition-colors">{agent.agency}</button>
-                                    </span>
+                                    
+                                    {/* Dynamic Affiliation Display */}
+                                    {agent.affiliation.type !== 'Independent' ? (
+                                        <span className="flex items-center gap-1">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                            <span>Agent at </span>
+                                            <button onClick={() => onNavigate(agent.affiliation.link)} className="hover:text-[#F9A826] font-semibold transition-colors">
+                                                {agent.affiliation.name}
+                                            </button>
+                                        </span>
+                                    ) : (
+                                        <span className="flex items-center gap-1">
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                            <span>Independent Agent</span>
+                                        </span>
+                                    )}
+
                                     <span className="hidden md:inline">•</span>
                                     <span className="flex items-center gap-1">
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
