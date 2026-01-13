@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import AgencyLayout from './AgencyLayout';
 
 interface AgencyPropertiesProps {
@@ -7,12 +7,28 @@ interface AgencyPropertiesProps {
 }
 
 const AgencyProperties: React.FC<AgencyPropertiesProps> = ({ onNavigate }) => {
-  const properties = [
-    { id: 101, title: 'Luxury Villa', location: 'East Legon', price: '$1.2M', agent: 'Sarah Jenkins', status: 'Active' },
-    { id: 102, title: 'Downtown Apt', location: 'Osu', price: '$850k', agent: 'Michael Ofori', status: 'Pending' },
-    { id: 103, title: 'Seaside Condo', location: 'Labadi', price: '$450k', agent: 'Sarah Jenkins', status: 'Active' },
-    { id: 104, title: 'Warehouse', location: 'Tema', price: '$2.1M', agent: 'Unassigned', status: 'Active' },
-  ];
+  // Converted to state to allow toggling 'Featured' status
+  const [properties, setProperties] = useState([
+    { id: 101, title: 'Luxury Villa', city: 'East Legon', price: '$1.2M', agent: 'Sarah Jenkins', status: 'Active', type: 'House', image: 'https://i.ibb.co/dwXy9qMp/Carousel-Image-1.jpg', isFeatured: true },
+    { id: 102, title: 'Downtown Apt', city: 'Osu', price: '$850k', agent: 'Michael Ofori', status: 'Pending', type: 'Apartment', image: 'https://i.ibb.co/jvXSSRTm/Carousel-Image-2.jpg', isFeatured: false },
+    { id: 103, title: 'Seaside Condo', city: 'Labadi', price: '$450k', agent: 'Sarah Jenkins', status: 'Active', type: 'Condo', image: 'https://i.ibb.co/0RBKCXM3/Carousel-Image-3.jpg', isFeatured: true },
+    { id: 104, title: 'Warehouse', city: 'Tema', price: '$2.1M', agent: 'Unassigned', status: 'Active', type: 'Commercial', image: 'https://i.ibb.co/NnZzSLFd/Sample-Card-Image.jpg', isFeatured: false },
+  ]);
+
+  const toggleFeatured = (id: number) => {
+    setProperties(properties.map(p => 
+      p.id === id ? { ...p, isFeatured: !p.isFeatured } : p
+    ));
+  };
+
+  const getStatusColor = (status: string) => {
+      switch (status) {
+          case 'Active': return 'text-green-600';
+          case 'Pending': return 'text-yellow-600';
+          case 'Sold': return 'text-red-600';
+          default: return 'text-gray-700';
+      }
+  };
 
   return (
     <AgencyLayout onNavigate={onNavigate} activePage="agency-properties" title="Managed Properties">
@@ -38,20 +54,42 @@ const AgencyProperties: React.FC<AgencyPropertiesProps> = ({ onNavigate }) => {
                 <table className="w-full text-left text-sm text-gray-600">
                     <thead className="bg-gray-50 text-xs uppercase text-gray-500 font-semibold border-b border-gray-200">
                         <tr>
-                            <th className="px-6 py-3">Property</th>
-                            <th className="px-6 py-3">Location</th>
+                            <th className="px-6 py-3 w-1/4">Property</th>
+                            <th className="px-6 py-3 w-1/4">Info</th>
                             <th className="px-6 py-3">Price</th>
+                            <th className="px-6 py-3 text-center">Featured</th>
                             <th className="px-6 py-3">Assigned Agent</th>
-                            <th className="px-6 py-3">Status</th>
                             <th className="px-6 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                         {properties.map(p => (
-                            <tr key={p.id} className="hover:bg-gray-50 transition-colors">
-                                <td className="px-6 py-4 font-medium text-gray-900">{p.title}</td>
-                                <td className="px-6 py-4">{p.location}</td>
+                            <tr key={p.id} className="hover:bg-gray-50 transition-colors align-top">
+                                <td className="px-6 py-4">
+                                    <div className="font-medium text-gray-900 text-base">{p.title}</div>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="flex flex-col gap-1.5 items-start">
+                                        <img src={p.image} alt={p.title} className="w-24 h-16 object-cover rounded-md shadow-sm border border-gray-100 mb-1" />
+                                        <span className="text-xs text-gray-500 font-medium">City: <span className="text-gray-800">{p.city}</span></span>
+                                        <span className="text-xs text-gray-500 font-medium">Type: <span className="text-gray-800">{p.type}</span></span>
+                                        <span className="text-xs text-gray-500 font-medium">Status: <span className={`font-bold ${getStatusColor(p.status)}`}>{p.status}</span></span>
+                                        <span className="text-xs text-gray-400">Listing ID: <span className="font-mono text-gray-600">{p.id}</span></span>
+                                    </div>
+                                </td>
                                 <td className="px-6 py-4 font-bold text-[#F9A826]">{p.price}</td>
+                                <td className="px-6 py-4 text-center">
+                                    <button 
+                                        onClick={() => toggleFeatured(p.id)}
+                                        className={`px-3 py-1 rounded text-xs font-semibold border transition-all ${
+                                            p.isFeatured 
+                                            ? 'bg-yellow-50 text-yellow-700 border-yellow-200 hover:bg-yellow-100' 
+                                            : 'bg-gray-50 text-gray-500 border-gray-200 hover:bg-gray-100'
+                                        }`}
+                                    >
+                                        {p.isFeatured ? 'Yes' : 'No'}
+                                    </button>
+                                </td>
                                 <td className="px-6 py-4">
                                     {p.agent === 'Unassigned' ? (
                                         <span className="text-red-500 italic text-xs">Unassigned</span>
@@ -59,16 +97,17 @@ const AgencyProperties: React.FC<AgencyPropertiesProps> = ({ onNavigate }) => {
                                         <span className="text-gray-700">{p.agent}</span>
                                     )}
                                 </td>
-                                <td className="px-6 py-4">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                        p.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'
-                                    }`}>
-                                        {p.status}
-                                    </span>
-                                </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button className="text-blue-600 hover:text-blue-800 text-xs font-medium mr-2">Edit</button>
-                                    <button className="text-gray-500 hover:text-gray-700 text-xs font-medium">Reassign</button>
+                                    <div className="flex items-center justify-end gap-3 h-full pt-4">
+                                        <button 
+                                            onClick={() => onNavigate('property-detail')} 
+                                            className="text-gray-600 hover:text-[#0A2B4C] text-xs font-medium transition-colors"
+                                        >
+                                            View
+                                        </button>
+                                        <button className="text-blue-600 hover:text-blue-800 text-xs font-medium transition-colors">Edit</button>
+                                        <button className="text-gray-500 hover:text-gray-700 text-xs font-medium transition-colors">Reassign</button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

@@ -55,6 +55,7 @@ import AdminReports from './components/admin/AdminReports';
 import AdminRegister from './components/admin/AdminRegister';
 import EditorRegister from './components/admin/EditorRegister';
 import AdminPageEditor from './components/admin/AdminPageEditor';
+import AdminSiteOptions from './components/admin/AdminSiteOptions';
 
 // Developer Pages
 import DeveloperDashboard from './components/developer/DeveloperDashboard';
@@ -134,6 +135,12 @@ const App: React.FC = () => {
         
         const pageName = currentPage.replace('admin-edit-', '');
         return renderRestricted(<AdminPageEditor pageName={pageName} onNavigate={handleNavigate} userRole={userRole} />, ['admin', 'editor']);
+    }
+
+    // Admin Site Options Routes
+    if (currentPage.startsWith('admin-site-options-')) {
+        const category = currentPage.replace('admin-site-options-', '');
+        return renderRestricted(<AdminSiteOptions category={category} onNavigate={handleNavigate} userRole={userRole} />, ['admin']);
     }
 
     // Admin Only Routes
