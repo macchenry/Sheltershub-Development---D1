@@ -69,41 +69,6 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
       }
   };
 
-  /* 
-     --- ALTERNATE SCENARIOS FOR DEMO/TESTING ---
-     
-     1. Independent Agent:
-     const listingOwner: ListingOwner = {
-         type: 'Agent',
-         name: 'James Bond',
-         title: 'Independent Agent',
-         image: '...',
-         phone: '...',
-         email: '...',
-         // No parentOrg
-     };
-
-     2. Home Owner:
-     const listingOwner: ListingOwner = {
-         type: 'HomeOwner',
-         name: 'John Doe', // Often hidden or just "Home Owner" depending on privacy, but Name is required for attribution string
-         title: 'Property Owner',
-         image: '...', // Default avatar
-         phone: '...',
-         email: '...',
-     };
-
-     3. Agency Direct Listing:
-     const listingOwner: ListingOwner = {
-         type: 'Agency',
-         name: 'Urban Spaces Realty',
-         title: 'Real Estate Agency',
-         image: '...', // Logo
-         phone: '...',
-         email: '...',
-     };
-  */
-
   const property = {
     id: propertyId || 10,
     title: isSoldDemo ? "Modern Family Home (SOLD)" : "Luxury Villa with Panoramic Ocean Views",
@@ -125,6 +90,7 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
     area: 4500, // sqft
     yearBuilt: 2022,
     availability: isSoldDemo ? "Sold" : "Immediately",
+    videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4", // Added video URL
     images: [
       "https://i.ibb.co/dwXy9qMp/Carousel-Image-1.jpg",
       "https://i.ibb.co/jvXSSRTm/Carousel-Image-2.jpg",
@@ -522,6 +488,23 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
                         </div>
                     </div>
                 </div>
+
+                {/* Video Tour Section */}
+                {property.videoUrl && (
+                    <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 className="text-xl font-bold text-[#0A2B4C] mb-4 border-b pb-2">Video Tour</h3>
+                        <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-gray-100">
+                            <iframe 
+                                src={property.videoUrl} 
+                                title={property.title}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                className="absolute top-0 left-0 w-full h-full"
+                            ></iframe>
+                        </div>
+                    </div>
+                )}
 
                 {/* Location Map Placeholder */}
                 <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm">
