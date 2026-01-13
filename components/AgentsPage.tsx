@@ -11,7 +11,6 @@ interface Agent {
   listingsCount: number;
   phone: string;
   image: string;
-  rating: number;
   verified: boolean;
 }
 
@@ -24,7 +23,6 @@ const mockAgents: Agent[] = [
     listingsCount: 12,
     phone: "+233 24 000 0001",
     image: "https://randomuser.me/api/portraits/women/44.jpg",
-    rating: 4.8,
     verified: true
   },
   {
@@ -35,7 +33,6 @@ const mockAgents: Agent[] = [
     listingsCount: 8,
     phone: "+233 24 000 0002",
     image: "https://randomuser.me/api/portraits/men/32.jpg",
-    rating: 4.5,
     verified: true
   },
   {
@@ -46,7 +43,6 @@ const mockAgents: Agent[] = [
     listingsCount: 15,
     phone: "+233 24 000 0003",
     image: "https://randomuser.me/api/portraits/women/68.jpg",
-    rating: 4.9,
     verified: true
   },
   {
@@ -57,7 +53,6 @@ const mockAgents: Agent[] = [
     listingsCount: 4,
     phone: "+233 24 000 0004",
     image: "https://randomuser.me/api/portraits/men/85.jpg",
-    rating: 4.2,
     verified: false
   },
   {
@@ -68,7 +63,6 @@ const mockAgents: Agent[] = [
     listingsCount: 22,
     phone: "+233 24 000 0005",
     image: "https://randomuser.me/api/portraits/women/33.jpg",
-    rating: 5.0,
     verified: true
   },
   {
@@ -79,7 +73,6 @@ const mockAgents: Agent[] = [
     listingsCount: 6,
     phone: "+233 24 000 0006",
     image: "https://randomuser.me/api/portraits/men/11.jpg",
-    rating: 4.0,
     verified: false
   },
   {
@@ -90,7 +83,6 @@ const mockAgents: Agent[] = [
     listingsCount: 9,
     phone: "+233 24 000 0007",
     image: "https://randomuser.me/api/portraits/women/24.jpg",
-    rating: 4.6,
     verified: true
   },
   {
@@ -101,7 +93,6 @@ const mockAgents: Agent[] = [
     listingsCount: 2,
     phone: "+233 24 000 0008",
     image: "https://randomuser.me/api/portraits/men/54.jpg",
-    rating: 3.8,
     verified: false
   }
 ];
@@ -185,8 +176,6 @@ const AgentsPage: React.FC<AgentsPageProps> = ({ onNavigate }) => {
 
     if (sortOrder === 'Most Listings') {
       result.sort((a, b) => b.listingsCount - a.listingsCount);
-    } else if (sortOrder === 'Top Rated') {
-      result.sort((a, b) => b.rating - a.rating);
     } else if (sortOrder === 'A-Z') {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }
@@ -262,7 +251,6 @@ const AgentsPage: React.FC<AgentsPageProps> = ({ onNavigate }) => {
                         className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826] bg-white appearance-none"
                     >
                         <option value="Most Listings">Most Listings</option>
-                        <option value="Top Rated">Top Rated</option>
                         <option value="A-Z">Name (A-Z)</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">

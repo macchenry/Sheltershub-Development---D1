@@ -3,10 +3,12 @@ import React, { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import PropertyCard from './PropertyCard';
+import ReviewsSection from './ReviewsSection';
 import { featuredProperties } from '../constants';
 
 interface SingleDeveloperPageProps {
   onNavigate: (page: string) => void;
+  userRole?: string;
 }
 
 // Mock Data for Projects
@@ -37,7 +39,7 @@ const projects = [
   }
 ];
 
-const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate }) => {
+const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate, userRole = 'guest' }) => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -84,7 +86,7 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate })
                              +233 24 000 0000
                         </div>
                         <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
-                             <svg className="w-4 h-4 text-[#0A2B4C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                             <svg className="w-4 h-4 text-[#0A2B4C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                              contact@empirebuilders.com
                         </div>
                          <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-full border border-gray-100">
@@ -229,6 +231,11 @@ const SingleDeveloperPage: React.FC<SingleDeveloperPageProps> = ({ onNavigate })
                     </button>
                 </div>
             </form>
+        </div>
+
+        {/* 6. Reviews Section */}
+        <div className="max-w-4xl">
+            <ReviewsSection targetName="Empire Builders" userRole={userRole} />
         </div>
 
       </main>

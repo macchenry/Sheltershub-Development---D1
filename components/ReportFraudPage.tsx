@@ -5,14 +5,15 @@ import Footer from './Footer';
 
 interface ReportFraudPageProps {
   onNavigate: (page: string) => void;
+  userRole?: string;
 }
 
-const ReportFraudPage: React.FC<ReportFraudPageProps> = ({ onNavigate }) => {
+const ReportFraudPage: React.FC<ReportFraudPageProps> = ({ onNavigate, userRole = 'guest' }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     target: '',
-    reason: 'Fake Listing',
+    reason: 'Fake Listing / Property Does Not Exist',
     description: ''
   });
   const [loading, setLoading] = useState(false);
@@ -20,13 +21,34 @@ const ReportFraudPage: React.FC<ReportFraudPageProps> = ({ onNavigate }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Check for pre-filled data from SingleProperty page
+    
+    // 1. Automatically prefill Name and Email based on logged-in user role
+    if (userRole !== 'guest') {
+        const mockUserData: Record<string, { name: string; email: string }> = {
+            'user': { name: 'John Doe', email: 'john.doe@example.com' },
+            'agent': { name: 'Martin McDermott', email: 'agent@sheltershub.com' },
+            'agency': { name: 'Prime Real Estate Admin', email: 'info@primerealestate.com' },
+            'developer': { name: 'Empire Builders Admin', email: 'contact@empirebuilders.com' },
+            'admin': { name: 'System Administrator', email: 'admin@sheltershub.com' },
+            'editor': { name: 'John Editor', email: 'editor@sheltershub.com' },
+        };
+
+        const currentUser = mockUserData[userRole] || mockUserData['user']; // Default to user if specific role missing
+
+        setFormData(prev => ({
+            ...prev,
+            name: currentUser.name,
+            email: currentUser.email
+        }));
+    }
+
+    // Check for pre-filled target from other pages (e.g. clicking 'Report' on a property)
     const prefillTarget = sessionStorage.getItem('reportTarget');
     if (prefillTarget) {
       setFormData(prev => ({ ...prev, target: prefillTarget }));
       sessionStorage.removeItem('reportTarget'); // Clear after use
     }
-  }, []);
+  }, [userRole]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -131,7 +153,7 @@ const ReportFraudPage: React.FC<ReportFraudPageProps> = ({ onNavigate }) => {
                             >
                                 <option>Fake Listing / Property Does Not Exist</option>
                                 <option>Scammer / Asking for Upfront Payment</option>
-                                <option>Impersonation of Agent/Agency</option>
+                                <option>Impersonation of Home Owner, Agent, Agency, or Developer</option>
                                 <option>Incorrect Price / Misleading Information</option>
                                 <option>Duplicate Listing</option>
                                 <option>Other</option>
@@ -157,7 +179,7 @@ const ReportFraudPage: React.FC<ReportFraudPageProps> = ({ onNavigate }) => {
                                 disabled={loading}
                                 className="w-full py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 shadow-md transition-colors disabled:opacity-70 flex justify-center items-center gap-2"
                             >
-                                {loading ? 'Submitting...' : 'Submit Report'}
+                                {loading ? 'Submitting...' : 'Report Fraud'}
                             </button>
                         </div>
                     </form>

@@ -20,41 +20,6 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
   const [watermarkedImage, setWatermarkedImage] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Reviews State
-  const [reviews, setReviews] = useState([
-    { id: 1, name: "Alice Freeman", rating: 5, date: "Oct 12, 2024", comment: "Absolutely stunning property! The view is breathtaking." },
-    { id: 2, name: "John Smith", rating: 4, date: "Sep 28, 2024", comment: "Great location and amenities. Garage is a bit small though." }
-  ]);
-  const [newReview, setNewReview] = useState({ name: '', rating: 0, comment: '' });
-
-  // Calculate Average Rating
-  const averageRating = reviews.length > 0 
-    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) 
-    : "0.0";
-
-  const handleReviewSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newReview.name || !newReview.comment || newReview.rating === 0) return;
-    
-    const review = {
-      id: reviews.length + 1,
-      name: newReview.name,
-      rating: newReview.rating,
-      date: "Just now",
-      comment: newReview.comment
-    };
-    setReviews([review, ...reviews]);
-    setNewReview({ name: '', rating: 0, comment: '' });
-  };
-
-  const renderStars = (rating: number) => {
-    return [...Array(5)].map((_, i) => (
-      <svg key={i} className={`w-4 h-4 ${i < rating ? 'text-[#F9A826]' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
-        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-      </svg>
-    ));
-  };
-
   // Helper to format property ID (e.g. SH-010)
   const formatPropertyId = (id: number) => {
     return `SH-${id.toString().padStart(3, '0')}`;
@@ -512,23 +477,14 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
                          </a>
                          <a href="#" className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-semibold py-3 px-4 rounded transition-colors">
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-                            WhatsApp
-                         </a>
-                         <button className="flex items-center justify-center gap-2 w-full bg-white border-2 border-[#0A2B4C] text-[#0A2B4C] hover:bg-gray-50 font-semibold py-3 px-4 rounded transition-colors">
-                            Message Agent
-                         </button>
-                    </div>
-
-                    <form className="space-y-3">
-                        <input type="text" placeholder="Your Name" className="w-full border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-[#F9A826]" />
-                        <input type="email" placeholder="Your Email" className="w-full border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-[#F9A826]" />
-                        <input type="tel" placeholder="Your Phone" className="w-full border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-[#F9A826]" />
-                        <textarea rows={3} placeholder="I am interested in this property..." className="w-full border border-gray-300 rounded px-4 py-2 text-sm focus:outline-none focus:border-[#F9A826]"></textarea>
-                        <button type="submit" className="w-full bg-[#F9A826] text-white font-bold py-2 rounded hover:bg-[#d88d15] transition-colors">
-                            Send Request
-                        </button>
-                    </form>
-                </div>
+                                    WhatsApp
+                                </a>
+                                <a href={`mailto:${property.agent.email}`} className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-bold">
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                    Email
+                                </a>
+                            </div>
+                        </div>
 
                 {/* Safety Tips (Optional but standard) */}
                  <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
@@ -550,83 +506,6 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                             Report This Listing
                         </a>
-                    </div>
-                 </div>
-
-                 {/* Property Review & Rating Section */}
-                 <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 className="text-xl font-bold text-[#0A2B4C] mb-4">Reviews & Ratings</h3>
-                    
-                    {/* Summary */}
-                    <div className="flex items-center gap-4 mb-6 bg-gray-50 p-4 rounded-lg">
-                       <div className="text-4xl font-bold text-[#0A2B4C]">{averageRating}</div>
-                       <div>
-                          <div className="flex text-[#F9A826] mb-1">{renderStars(Math.round(parseFloat(averageRating)))}</div>
-                          <div className="text-xs text-gray-500 font-medium">{reviews.length} Reviews</div>
-                       </div>
-                    </div>
-
-                    {/* Review List */}
-                    <div className="space-y-5 mb-8 max-h-80 overflow-y-auto pr-2">
-                       {reviews.map(r => (
-                          <div key={r.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
-                             <div className="flex justify-between items-start mb-1">
-                                <span className="font-bold text-sm text-[#0A2B4C]">{r.name}</span>
-                                <span className="text-[10px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{r.date}</span>
-                             </div>
-                             <div className="flex text-[#F9A826] mb-2 scale-75 origin-left">{renderStars(r.rating)}</div>
-                             <p className="text-xs text-gray-600 leading-relaxed italic">"{r.comment}"</p>
-                          </div>
-                       ))}
-                    </div>
-
-                    {/* Write a Review Form */}
-                    <div className="border-t border-gray-200 pt-6">
-                       <h4 className="font-bold text-sm text-[#0A2B4C] mb-3 uppercase tracking-wide">Write a Review</h4>
-                       <form onSubmit={handleReviewSubmit} className="space-y-4">
-                          <div>
-                            <label className="block text-xs font-semibold text-gray-500 mb-1">Rating</label>
-                            <div className="flex gap-1">
-                               {[1, 2, 3, 4, 5].map((star) => (
-                                  <button
-                                    key={star}
-                                    type="button"
-                                    onClick={() => setNewReview({ ...newReview, rating: star })}
-                                    className="focus:outline-none transition-transform hover:scale-110"
-                                  >
-                                    <svg className={`w-6 h-6 ${star <= newReview.rating ? 'text-[#F9A826]' : 'text-gray-300'} transition-colors`} fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                  </button>
-                               ))}
-                            </div>
-                          </div>
-                          
-                          <input 
-                            type="text" 
-                            required
-                            value={newReview.name}
-                            onChange={(e) => setNewReview({...newReview, name: e.target.value})}
-                            placeholder="Your Name" 
-                            className="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-[#F9A826] focus:ring-1 focus:ring-[#F9A826]" 
-                          />
-                          
-                          <textarea 
-                            required
-                            rows={3} 
-                            value={newReview.comment}
-                            onChange={(e) => setNewReview({...newReview, comment: e.target.value})}
-                            placeholder="Share your experience..." 
-                            className="w-full border border-gray-300 rounded px-3 py-2 text-xs focus:outline-none focus:border-[#F9A826] focus:ring-1 focus:ring-[#F9A826]"
-                          ></textarea>
-                          
-                          <button 
-                            type="submit" 
-                            className="w-full bg-[#0A2B4C] text-white font-bold py-2 rounded text-sm hover:bg-[#08223c] transition-colors"
-                          >
-                            Submit Review
-                          </button>
-                       </form>
                     </div>
                  </div>
 

@@ -3,13 +3,15 @@ import React, { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import PropertyCard from './PropertyCard';
+import ReviewsSection from './ReviewsSection';
 import { featuredProperties } from '../constants';
 
 interface SingleAgentPageProps {
   onNavigate: (page: string) => void;
+  userRole?: string;
 }
 
-const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate }) => {
+const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate, userRole = 'guest' }) => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,16 +32,8 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate }) => {
     bio: "Sarah is a dedicated real estate professional with over 8 years of experience in the Greater Accra market. She specializes in luxury residential properties and high-end commercial spaces. Known for her integrity and exceptional negotiation skills, Sarah has built a reputation for delivering results and exceeding client expectations. She believes in building long-term relationships based on trust and transparency.",
     stats: {
         listings: 12,
-        sold: 45,
-        rating: 4.8
+        sold: 45
     }
-  };
-
-  const handleReportAgent = (e: React.MouseEvent) => {
-      e.preventDefault();
-      // Pass agent name to the report page context
-      sessionStorage.setItem('reportAgentName', agent.name);
-      onNavigate('report-agent');
   };
 
   return (
@@ -134,7 +128,7 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate }) => {
                 {/* 4. Agent Statistics Section */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
                     <h3 className="text-lg font-bold text-[#0A2B4C] mb-4">Performance Stats</h3>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                         <div className="text-center p-4 bg-blue-50 rounded-lg">
                             <span className="block text-2xl font-bold text-[#0A2B4C]">{agent.stats.listings}</span>
                             <span className="text-xs text-gray-500 uppercase tracking-wide">Active Listings</span>
@@ -142,12 +136,6 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate }) => {
                         <div className="text-center p-4 bg-green-50 rounded-lg">
                             <span className="block text-2xl font-bold text-green-600">{agent.stats.sold}</span>
                             <span className="text-xs text-gray-500 uppercase tracking-wide">Properties Sold</span>
-                        </div>
-                        <div className="text-center p-4 bg-orange-50 rounded-lg">
-                            <div className="flex items-center justify-center gap-1 text-[#F9A826] font-bold text-2xl">
-                                {agent.stats.rating} <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                            </div>
-                            <span className="text-xs text-gray-500 uppercase tracking-wide">Client Rating</span>
                         </div>
                     </div>
                 </div>
@@ -171,12 +159,15 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate }) => {
                     </div>
                 </div>
 
+                {/* 6. Reviews Section */}
+                <ReviewsSection targetName={agent.name} userRole={userRole} />
+
             </div>
 
             {/* Right Column: Contact Sidebar */}
             <aside className="lg:col-span-4 space-y-6">
                 
-                {/* 6. Contact Agent Section */}
+                {/* 7. Contact Agent Section */}
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 md:p-8 sticky top-24">
                     <h3 className="text-xl font-bold text-[#0A2B4C] mb-2">Contact Sarah</h3>
                     <p className="text-sm text-gray-500 mb-6">Send a message directly to the agent.</p>
@@ -202,17 +193,6 @@ const SingleAgentPage: React.FC<SingleAgentPageProps> = ({ onNavigate }) => {
                             Send Message
                         </button>
                     </form>
-
-                    {/* Report Agent Link */}
-                    <div className="mt-4">
-                        <a 
-                            href="#"
-                            onClick={handleReportAgent}
-                            className="text-xs text-gray-500 hover:text-[#0A2B4C] hover:underline flex items-center gap-1"
-                        >
-                            Report Agent
-                        </a>
-                    </div>
                 </div>
 
             </aside>

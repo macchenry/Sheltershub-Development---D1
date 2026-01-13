@@ -3,10 +3,12 @@ import React, { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import PropertyCard from './PropertyCard';
+import ReviewsSection from './ReviewsSection';
 import { featuredProperties } from '../constants';
 
 interface SingleAgencyPageProps {
   onNavigate: (page: string) => void;
+  userRole?: string;
 }
 
 // Mock Agent Data
@@ -45,7 +47,7 @@ const agents = [
   }
 ];
 
-const SingleAgencyPage: React.FC<SingleAgencyPageProps> = ({ onNavigate }) => {
+const SingleAgencyPage: React.FC<SingleAgencyPageProps> = ({ onNavigate, userRole = 'guest' }) => {
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -225,6 +227,11 @@ const SingleAgencyPage: React.FC<SingleAgencyPageProps> = ({ onNavigate }) => {
                     </button>
                 </div>
             </form>
+        </div>
+
+        {/* 6. Reviews Section */}
+        <div className="max-w-4xl">
+            <ReviewsSection targetName="Prime Real Estate" userRole={userRole} />
         </div>
 
       </main>

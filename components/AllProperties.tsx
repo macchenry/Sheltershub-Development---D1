@@ -14,10 +14,14 @@ const Pagination: React.FC = () => (
   </div>
 );
 
-const ActiveFilterPill: React.FC<{ label: string }> = ({ label }) => (
+const ActiveFilterPill: React.FC<{ label: string; onRemove?: () => void }> = ({ label, onRemove }) => (
   <span className="inline-flex items-center bg-white border border-gray-200 rounded px-3 py-1 text-sm text-gray-600 shadow-sm transition-shadow hover:shadow-md">
     {label}
-    <button className="ml-2 text-gray-400 hover:text-red-500 transition-colors">
+    <button 
+        onClick={onRemove}
+        className="ml-2 text-gray-400 hover:text-red-500 transition-colors focus:outline-none"
+        aria-label={`Remove ${label} filter`}
+    >
        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
     </button>
   </span>
@@ -38,6 +42,19 @@ const SortButton: React.FC<{ label: string; active?: boolean; direction?: 'up' |
 );
 
 const AllProperties: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
+  // State for advanced feature filters
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([
+      'Swimming pool', 'Security alarm', 'Garage', 'Fireplace', 'Storage Unit', 'Fitness center', 'Fully furnished', 'Intercom', 'Balcony'
+  ]);
+
+  const toggleFeature = (feature: string) => {
+      setSelectedFeatures(prev => 
+          prev.includes(feature) 
+              ? prev.filter(f => f !== feature) 
+              : [...prev, feature]
+      );
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen pb-12">
         {/* Breadcrumb Area */}
@@ -58,24 +75,25 @@ const AllProperties: React.FC<{ onNavigate: (page: string) => void }> = ({ onNav
                 
                 {/* Left Sidebar */}
                 <aside className="w-full lg:w-[280px] flex-shrink-0">
-                    <FilterSidebar />
+                    <FilterSidebar selectedFeatures={selectedFeatures} onToggleFeature={toggleFeature} />
                 </aside>
 
                 {/* Main Content */}
                 <main className="flex-1 w-full">
                     
                     {/* Active Filters Row */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-2 mb-6 min-h-[32px]">
+                        {/* Static pill for visual context as per original design */}
                         <ActiveFilterPill label="2 bedroom apartment" />
-                        <ActiveFilterPill label="Swimming pool" />
-                        <ActiveFilterPill label="Security alarm" />
-                        <ActiveFilterPill label="Fireplace" />
-                        <ActiveFilterPill label="Storage Unit" />
-                        <ActiveFilterPill label="Gym" />
-                        <ActiveFilterPill label="Garage" />
-                        <ActiveFilterPill label="Fully furnished" />
-                        <ActiveFilterPill label="Intercom" />
-                        <ActiveFilterPill label="Balcony" />
+                        
+                        {/* Dynamic Feature Pills */}
+                        {selectedFeatures.map(feature => (
+                            <ActiveFilterPill 
+                                key={feature} 
+                                label={feature} 
+                                onRemove={() => toggleFeature(feature)} 
+                            />
+                        ))}
                     </div>
 
                     {/* Results & Sorting Toolbar */}

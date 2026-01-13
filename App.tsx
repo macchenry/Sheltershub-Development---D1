@@ -12,7 +12,6 @@ import ForRentPage from './components/ForRentPage';
 import ForSalePage from './components/ForSalePage';
 import AgentsPage from './components/AgentsPage';
 import SingleAgentPage from './components/SingleAgentPage';
-import ReportAgentPage from './components/ReportAgentPage';
 import LoginPage from './components/LoginPage';
 import SingleProperty from './components/SingleProperty';
 import AddPropertyPage from './components/AddPropertyPage';
@@ -185,19 +184,18 @@ const App: React.FC = () => {
       return <AgentsPage onNavigate={handleNavigate} />;
     }
 
-    if (currentPage === 'agent-detail') return <SingleAgentPage onNavigate={handleNavigate} />;
-    if (currentPage === 'report-agent') return <ReportAgentPage onNavigate={handleNavigate} />;
+    if (currentPage === 'agent-detail') return <SingleAgentPage onNavigate={handleNavigate} userRole={userRole} />;
     if (currentPage === 'property-detail') return <SingleProperty onNavigate={handleNavigate} />;
     if (currentPage === 'add-property') return <AddPropertyPage onNavigate={handleNavigate} />;
     if (currentPage === 'favorites') return <FavoritesPage onNavigate={handleNavigate} />;
     if (currentPage === 'compare-properties') return <ComparePropertiesPage onNavigate={handleNavigate} />;
     if (currentPage === 'agencies') return <AgenciesPage onNavigate={handleNavigate} />;
-    if (currentPage === 'agency-detail') return <SingleAgencyPage onNavigate={handleNavigate} />;
+    if (currentPage === 'agency-detail') return <SingleAgencyPage onNavigate={handleNavigate} userRole={userRole} />;
     if (currentPage === 'add-agency') return <AddAgencyPage onNavigate={handleNavigate} />;
     if (currentPage === 'add-agent') return <AddAgentPage onNavigate={handleNavigate} />;
     if (currentPage === 'add-developer') return <AddDeveloperPage onNavigate={handleNavigate} />;
     if (currentPage === 'developers') return <DevelopersPage onNavigate={handleNavigate} />;
-    if (currentPage === 'developer-detail') return <SingleDeveloperPage onNavigate={handleNavigate} />;
+    if (currentPage === 'developer-detail') return <SingleDeveloperPage onNavigate={handleNavigate} userRole={userRole} />;
     if (currentPage === 'search-results') return <SearchResultsPage onNavigate={handleNavigate} />;
     if (currentPage === 'sitemap') return <SitemapPage onNavigate={handleNavigate} />;
     if (currentPage === 'blog') return <BlogPage onNavigate={handleNavigate} />;
@@ -206,7 +204,7 @@ const App: React.FC = () => {
     if (currentPage === 'contact') return <ContactPage onNavigate={handleNavigate} />;
     if (currentPage === 'faq') return <FAQPage onNavigate={handleNavigate} />;
     if (currentPage === 'terms') return <TermsPage onNavigate={handleNavigate} />;
-    if (currentPage === 'report-fraud') return <ReportFraudPage onNavigate={handleNavigate} />;
+    if (currentPage === 'report-fraud') return <ReportFraudPage onNavigate={handleNavigate} userRole={userRole} />;
     if (currentPage === 'user-profile') return <UserProfilePage onNavigate={handleNavigate} />;
     if (currentPage === '404') return <NotFoundPage onNavigate={handleNavigate} />;
 

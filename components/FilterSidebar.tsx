@@ -1,10 +1,27 @@
 
 import React, { useState } from 'react';
 
-const FilterSidebar: React.FC = () => {
+interface FilterSidebarProps {
+    selectedFeatures?: string[];
+    onToggleFeature?: (feature: string) => void;
+}
+
+const FilterSidebar: React.FC<FilterSidebarProps> = ({ selectedFeatures = [], onToggleFeature }) => {
   // These states are for visual interactivity of the UI components
   const [activeTab, setActiveTab] = useState('For Rent');
   
+  const featuresList = [
+    'Balcony', 'Fitness center', 
+    'Storage Unit', 'Disabled access', 
+    'Central Heating', 'Air conditioning', 
+    'Renovation', 'Wi-Fi', 
+    'Fireplace', 'Walk-in Closet', 
+    'Parking', 'Swimming pool', 
+    'Fully furnished', 'Cable TV', 
+    'Security alarm', 'Garage', 
+    'Yard', 'Intercom'
+  ];
+
   return (
     <div className="bg-white p-5 rounded-sm border border-gray-200 shadow-sm">
       {/* Top Tabs */}
@@ -107,23 +124,14 @@ const FilterSidebar: React.FC = () => {
             Advanced features
         </button>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-2">
-            {[
-                'Balcony', 'Fitness center', 
-                'Storage Unit', 'Disabled access', 
-                'Central Heating', 'Air conditioning', 
-                'Renovation', 'Wi-Fi', 
-                'Fireplace', 'Walk-in Closet', 
-                'Parking', 'Swimming pool', 
-                'Fully furnished', 'Cable TV', 
-                'Security alarm', 'Garage', 
-                'Yard', 'Intercom'
-            ].map((item) => (
+            {featuresList.map((item) => (
                  <label key={item} className="flex items-center text-sm text-gray-600 cursor-pointer group">
                     <div className="relative flex items-center">
                         <input 
                             type="checkbox" 
                             className="peer h-4 w-4 border-2 border-gray-300 rounded text-[#0A2B4C] focus:ring-[#0A2B4C] transition-colors cursor-pointer checked:border-[#0A2B4C]" 
-                            defaultChecked={['Balcony', 'Central Heating', 'Fireplace', 'Parking', 'Garage'].includes(item)} 
+                            checked={selectedFeatures.includes(item)}
+                            onChange={() => onToggleFeature && onToggleFeature(item)}
                         />
                     </div>
                     <span className="ml-2 group-hover:text-gray-900 transition-colors">{item}</span>
