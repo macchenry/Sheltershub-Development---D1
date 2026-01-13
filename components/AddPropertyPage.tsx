@@ -15,7 +15,7 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
        // Mock adding image logic
-       if (images.length < 10) {
+       if (images.length < 5) {
          setImages([...images, "https://i.ibb.co/NnZzSLFd/Sample-Card-Image.jpg"]);
        }
     }
@@ -36,7 +36,7 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      if (images.length < 10) {
+      if (images.length < 5) {
         setImages([...images, "https://i.ibb.co/NnZzSLFd/Sample-Card-Image.jpg"]);
       }
     }
@@ -158,7 +158,7 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
             {/* 4. Upload Images */}
             <div className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm">
                 <h2 className="text-xl font-bold text-[#0A2B4C] mb-6 border-b pb-4">Property Gallery</h2>
-                <p className="text-sm text-gray-500 mb-4">Upload up to 10 photos. Large files (&gt;150KB) will be automatically compressed.</p>
+                <p className="text-sm text-gray-500 mb-4">Upload up to 5 photos. Large files (&gt;150KB) will be automatically compressed.</p>
                 
                 <input 
                     type="file" 
@@ -190,10 +190,15 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
                         {images.map((img, idx) => (
                             <div key={idx} className="relative group rounded-lg overflow-hidden h-24 w-full shadow-sm border border-gray-200">
                                 <img src={img} alt={`Upload ${idx}`} className="w-full h-full object-cover" />
+                                {idx === 0 && (
+                                    <div className="absolute bottom-0 left-0 right-0 bg-[#0A2B4C] text-white text-[10px] font-bold text-center py-1 bg-opacity-90 z-10">
+                                        Featured Image
+                                    </div>
+                                )}
                                 <button 
                                     type="button"
                                     onClick={() => removeImage(idx)}
-                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity z-20"
                                 >
                                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                 </button>
