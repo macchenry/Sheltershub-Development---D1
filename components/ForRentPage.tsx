@@ -5,6 +5,7 @@ import Footer from './Footer';
 import { Property, PropertyStatus } from '../types';
 import { allPropertiesList } from '../constants';
 import { BedIcon, BathIcon, GarageIcon, HeartIcon } from './icons/PropertyIcons';
+import { formatCurrency } from '../utils/currency';
 
 interface ForRentPageProps {
   onNavigate: (page: string) => void;
@@ -87,7 +88,7 @@ const RentalPropertyCard: React.FC<{ property: Property; onClick: () => void }> 
 
         <div className="mt-auto">
           <p className="text-xl font-bold text-[#0A2B4C]">
-            GH₵{property.priceGHS.toLocaleString('en-US')} <span className="text-sm font-normal text-gray-500">/ month</span>
+            {formatCurrency(property.priceGHS)} <span className="text-sm font-normal text-gray-500">/ month</span>
           </p>
           <div className="flex justify-between items-center mt-2">
              <span className="text-xs text-gray-400">USD {property.priceUSD.toLocaleString('en-US')} / mo</span>

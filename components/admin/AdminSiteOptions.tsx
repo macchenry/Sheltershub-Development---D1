@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import AdminLayout from './AdminLayout';
+import { getCurrencyConfig, saveCurrencyConfig, CurrencyConfig } from '../../utils/currency';
 
 interface AdminSiteOptionsProps {
   category: string;
@@ -21,8 +22,12 @@ const AdminSiteOptions: React.FC<AdminSiteOptionsProps> = ({ category, onNavigat
   const [editingItem, setEditingItem] = useState<OptionItem | null>(null);
   const [formData, setFormData] = useState({ name: '', description: '', parentId: '' });
   
+  // Currency Settings State
+  const [currencyConfig, setCurrencyConfig] = useState<CurrencyConfig>(getCurrencyConfig());
+
   // Format Category Name for display (e.g. "type" -> "Property Types")
   const categoryTitleMap: Record<string, string> = {
+      currency: 'Currency Format',
       type: 'Property Types',
       status: 'Listing Statuses',
       features: 'Features & Amenities',
@@ -83,8 +88,19 @@ const AdminSiteOptions: React.FC<AdminSiteOptionsProps> = ({ category, onNavigat
 
   useEffect(() => {
       setItems(getMockData(category));
+      if (category === 'currency') {
+          setCurrencyConfig(getCurrencyConfig());
+      }
   }, [category]);
 
+  // Currency Handlers
+  const handleCurrencySave = (e: React.FormEvent) => {
+      e.preventDefault();
+      saveCurrencyConfig(currencyConfig);
+      alert('Currency settings saved successfully!');
+  };
+
+  // Generic Item Handlers
   const handleOpenModal = (item?: OptionItem) => {
       if (item) {
           setEditingItem(item);
@@ -138,6 +154,104 @@ const AdminSiteOptions: React.FC<AdminSiteOptionsProps> = ({ category, onNavigat
           setItems(items.filter(i => i.id !== id));
       }
   };
+
+  // Special Rendering for Currency Category
+  if (category === 'currency') {
+      return (
+          <AdminLayout onNavigate={onNavigate} activePage={`admin-site-options-${category}`} title={`Manage ${title}`} userRole={userRole}>
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-2xl">
+                  <div className="mb-6">
+                      <h2 className="font-bold text-gray-800 text-lg">Currency Configuration</h2>
+                      <p className="text-sm text-gray-500">Customize how currency values are displayed across the platform.</p>
+                  </div>
+                  
+                  <form onSubmit={handleCurrencySave} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">Currency Symbol</label>
+                              <input 
+                                  type="text" 
+                                  value={currencyConfig.symbol}
+                                  onChange={e => setCurrencyConfig({...currencyConfig, symbol: e.target.value})}
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:border-[#F9A826]"
+                                  placeholder="e.g. $, €, GH₵"
+                              />
+                          </div>
+                          <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">Symbol Position</label>
+                              <select 
+                                  value={currencyConfig.position}
+                                  onChange={e => setCurrencyConfig({...currencyConfig, position: e.target.value as any})}
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:border-[#F9A826]"
+                              >
+                                  <option value="before">Before Amount ($100)</option>
+                                  <option value="after">After Amount (100$)</option>
+                              </select>
+                          </div>
+                          <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">Thousand Separator</label>
+                              <select 
+                                  value={currencyConfig.thousandSeparator}
+                                  onChange={e => setCurrencyConfig({...currencyConfig, thousandSeparator: e.target.value})}
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:border-[#F9A826]"
+                              >
+                                  <option value=",">Comma (,)</option>
+                                  <option value=".">Dot (.)</option>
+                                  <option value=" ">Space ( )</option>
+                              </select>
+                          </div>
+                          <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">Decimal Separator</label>
+                              <select 
+                                  value={currencyConfig.decimalSeparator}
+                                  onChange={e => setCurrencyConfig({...currencyConfig, decimalSeparator: e.target.value})}
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:border-[#F9A826]"
+                              >
+                                  <option value=".">Dot (.)</option>
+                                  <option value=",">Comma (,)</option>
+                              </select>
+                          </div>
+                          <div>
+                              <label className="block text-sm font-semibold text-gray-700 mb-2">Decimal Places</label>
+                              <input 
+                                  type="number" 
+                                  min="0"
+                                  max="4"
+                                  value={currencyConfig.decimals}
+                                  onChange={e => setCurrencyConfig({...currencyConfig, decimals: parseInt(e.target.value)})}
+                                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:border-[#F9A826]"
+                              />
+                          </div>
+                      </div>
+                      
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-4">
+                          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide block mb-2">Preview</span>
+                          <span className="text-3xl font-bold text-[#0A2B4C]">
+                              {(() => {
+                                  // Live Preview Logic using the same formatting principles
+                                  let num = (1234567.89).toFixed(currencyConfig.decimals);
+                                  let [int, dec] = num.split('.');
+                                  // Escape separator for regex if it's a dot
+                                  const rgx = /(\d+)(\d{3})/;
+                                  while (rgx.test(int)) {
+                                      int = int.replace(rgx, '$1' + currencyConfig.thousandSeparator + '$2');
+                                  }
+                                  let res = int + (currencyConfig.decimals > 0 ? currencyConfig.decimalSeparator + dec : '');
+                                  return currencyConfig.position === 'before' ? currencyConfig.symbol + res : res + ' ' + currencyConfig.symbol;
+                              })()}
+                          </span>
+                      </div>
+
+                      <div className="pt-4 border-t border-gray-100 flex justify-end">
+                          <button type="submit" className="px-6 py-2.5 bg-[#F9A826] text-white font-bold rounded-lg hover:bg-[#d88d15] shadow-sm transition-colors">
+                              Save Configuration
+                          </button>
+                      </div>
+                  </form>
+              </div>
+          </AdminLayout>
+      );
+  }
 
   // Filter items that can be parents (avoid self-reference or circular reference in a real app, keeping simple here)
   const potentialParents = items.filter(i => !editingItem || i.id !== editingItem.id);

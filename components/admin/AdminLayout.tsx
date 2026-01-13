@@ -64,6 +64,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, onNavigate, activeP
   ];
 
   const siteOptions = [
+      { name: 'Currency Format', id: 'currency' },
       { name: 'Type', id: 'type' },
       { name: 'Status', id: 'status' },
       { name: 'Features', id: 'features' },

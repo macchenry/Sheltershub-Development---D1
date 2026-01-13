@@ -5,6 +5,7 @@ import Footer from './Footer';
 import PropertyCard from './PropertyCard';
 import { featuredProperties } from '../constants';
 import { BedIcon, BathIcon, GarageIcon, AreaIcon, HeartIcon, LocationIcon, CheckIcon, ShareIcon, PrintIcon, DownloadIcon } from './icons/PropertyIcons';
+import { formatCurrency } from '../utils/currency';
 
 interface SinglePropertyProps {
   onNavigate: (page: string) => void;
@@ -290,7 +291,7 @@ const SingleProperty: React.FC<SinglePropertyProps> = ({ onNavigate, propertyId 
                 </div>
             </div>
             <div className="text-left md:text-right">
-                 <p className="text-3xl font-bold text-[#0A2B4C]">GH₵{property.priceGHS.toLocaleString()}</p>
+                 <p className="text-3xl font-bold text-[#0A2B4C]">{formatCurrency(property.priceGHS)}</p>
                  <p className="text-gray-500 font-medium">USD {property.priceUSD.toLocaleString()}</p>
             </div>
         </div>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Property, PropertyStatus } from '../types';
 import { BedIcon, BathIcon, GarageIcon, HeartIcon } from './icons/PropertyIcons';
+import { formatCurrency } from '../utils/currency';
 
 interface PropertyCardProps {
   property: Property;
@@ -113,7 +114,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, onClick }) => {
 
         <div className="mt-auto">
           <p className="text-xl font-bold text-[#0A2B4C]">
-            GH₵{property.priceGHS.toLocaleString('en-US')}
+            {formatCurrency(property.priceGHS)}
           </p>
           <div className="flex justify-between items-center mt-1">
              <p className="text-xs text-gray-500">

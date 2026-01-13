@@ -5,6 +5,7 @@ import Footer from './Footer';
 import PropertyCard from './PropertyCard';
 import { featuredProperties } from '../constants';
 import { BedIcon, BathIcon, GarageIcon, AreaIcon, CheckIcon, LocationIcon } from './icons/PropertyIcons';
+import { formatCurrency } from '../utils/currency';
 
 interface ComparePropertiesPageProps {
   onNavigate: (page: string) => void;
@@ -83,7 +84,7 @@ const ComparePropertiesPage: React.FC<ComparePropertiesPageProps> = ({ onNavigat
                                         <LocationIcon className="w-4 h-4" /> Cantonments, Accra {/* Mock Location */}
                                     </p>
                                     <p className="font-bold text-xl text-[#F9A826] mb-4">
-                                        GH₵{property.priceGHS.toLocaleString()}
+                                        {formatCurrency(property.priceGHS)}
                                     </p>
                                     
                                     <button 
@@ -199,7 +200,7 @@ const ComparePropertiesPage: React.FC<ComparePropertiesPageProps> = ({ onNavigat
                                 </div>
                                 <div className="flex-grow min-w-0">
                                     <h4 className="font-bold text-[#0A2B4C] truncate">{property.name}</h4>
-                                    <p className="text-sm text-gray-500 mb-2">GH₵{property.priceGHS.toLocaleString()}</p>
+                                    <p className="text-sm text-gray-500 mb-2">{formatCurrency(property.priceGHS)}</p>
                                     <button 
                                         onClick={() => setComparing([...comparing, property])}
                                         className="text-xs bg-[#F9A826] text-white px-3 py-1.5 rounded font-bold hover:bg-[#d88d15] transition-colors"
