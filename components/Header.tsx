@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { navLinks } from '../constants';
 
 const Logo: React.FC = () => (
@@ -9,10 +9,24 @@ const Logo: React.FC = () => (
 interface HeaderProps {
     onNavigate?: (page: string) => void;
     activePage?: string;
+    userRole?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home' }) => {
+const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home', userRole = 'guest' }) => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [accountOpen, setAccountOpen] = useState(false);
+    const accountRef = useRef<HTMLDivElement>(null);
+
+    // Close account menu on click outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (accountRef.current && !accountRef.current.contains(event.target as Node)) {
+                setAccountOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     const handleNavClick = (e: React.MouseEvent, linkName: string) => {
         e.preventDefault();
@@ -29,45 +43,96 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home' }) => {
         }
     };
 
-    const handleAuthClick = (e: React.MouseEvent, type: string) => {
+    const handleLogoClick = (e: React.MouseEvent) => {
         e.preventDefault();
         if (onNavigate) {
-            onNavigate('login');
-        }
-    }
-    
-    const handlePostPropertyClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        if (onNavigate) {
-            onNavigate('add-property');
+            onNavigate('home');
         }
     };
 
-    const handleAddAgencyClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        if (onNavigate) {
-            onNavigate('add-agency');
+    // Account Menu Handlers
+    const handleAccountAction = (action: string) => {
+        setAccountOpen(false);
+        if (!onNavigate) return;
+
+        if (action === 'logout') {
+            onNavigate('logout');
+            return;
+        }
+
+        // Role-based routing helpers
+        switch (action) {
+            case 'dashboard':
+                if (userRole === 'admin' || userRole === 'editor') onNavigate('admin-dashboard');
+                else if (userRole === 'agent') onNavigate('agent-properties'); // Agent "dashboard"
+                else if (userRole === 'agency') onNavigate('agency-dashboard');
+                else if (userRole === 'developer') onNavigate('developer-dashboard');
+                else if (userRole === 'user') onNavigate('user-profile');
+                else onNavigate('login');
+                break;
+            case 'insight':
+                if (userRole === 'admin' || userRole === 'editor') onNavigate('admin-reports');
+                else if (userRole === 'agent') onNavigate('agent-performance');
+                else if (userRole === 'developer') onNavigate('developer-performance');
+                else if (userRole === 'agency') onNavigate('agency-dashboard');
+                else if (userRole === 'user') onNavigate('user-profile');
+                else onNavigate('login');
+                break;
+            case 'properties':
+                if (userRole === 'admin' || userRole === 'editor') onNavigate('admin-properties');
+                else if (userRole === 'agent') onNavigate('agent-properties');
+                else if (userRole === 'agency') onNavigate('agency-properties');
+                else if (userRole === 'developer') onNavigate('developer-dashboard');
+                else if (userRole === 'user') onNavigate('favorites'); 
+                else onNavigate('login');
+                break;
+            case 'post':
+                if (userRole === 'agent') onNavigate('agent-add-property');
+                else if (userRole === 'developer') onNavigate('developer-add-project');
+                else if (userRole === 'agency') onNavigate('agency-properties'); 
+                else onNavigate('add-property');
+                break;
+            case 'favorites':
+                onNavigate('favorites');
+                break;
+            case 'profile':
+                if (userRole === 'admin' || userRole === 'editor') onNavigate('admin-settings');
+                else if (userRole === 'agent') onNavigate('agent-settings');
+                else if (userRole === 'agency') onNavigate('agency-settings');
+                else if (userRole === 'developer') onNavigate('developer-settings');
+                else onNavigate('user-profile');
+                break;
+            case 'login':
+                onNavigate('login');
+                break;
+            default:
+                break;
         }
     };
 
-    const handleAddAgentClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        if (onNavigate) {
-            onNavigate('add-agent');
-        }
-    };
+    const isLoggedIn = userRole !== 'guest';
 
-    const handleAddDeveloperClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        if (onNavigate) {
-            onNavigate('add-developer');
-        }
-    };
+    const accountOptions = isLoggedIn ? [
+        { label: 'Dashboard', action: 'dashboard' },
+        { label: 'Insight & Analytics', action: 'insight' },
+        { label: 'Properties', action: 'properties' },
+        { label: 'Post a Listing', action: 'post' },
+        { label: 'Favorites & Saved Searches', action: 'favorites' },
+        { label: 'My Profile', action: 'profile' },
+        { label: 'Logout', action: 'logout' },
+    ] : [
+        { label: 'Dashboard', action: 'dashboard' }, // Will redirect to login
+        { label: 'Insight & Analytics', action: 'insight' }, // Will redirect to login
+        { label: 'Properties', action: 'properties' }, // Will redirect to login
+        { label: 'Post a Listing', action: 'post' },
+        { label: 'Favorites & Saved Searches', action: 'favorites' },
+        { label: 'Login', action: 'login' },
+    ];
 
     const submenuItems: Record<string, { label: string; onClick: (e: React.MouseEvent) => void; activePage: string }> = {
-        'Agencies': { label: 'Add New Agency', onClick: handleAddAgencyClick, activePage: 'add-agency' },
-        'Agents': { label: 'Add New Agent', onClick: handleAddAgentClick, activePage: 'add-agent' },
-        'Developers': { label: 'Add New Developer', onClick: handleAddDeveloperClick, activePage: 'add-developer' },
+        'Agencies': { label: 'Add New Agency', onClick: (e) => { e.preventDefault(); if(onNavigate) onNavigate('add-agency'); }, activePage: 'add-agency' },
+        'Agents': { label: 'Add New Agent', onClick: (e) => { e.preventDefault(); if(onNavigate) onNavigate('add-agent'); }, activePage: 'add-agent' },
+        'Developers': { label: 'Add New Developer', onClick: (e) => { e.preventDefault(); if(onNavigate) onNavigate('add-developer'); }, activePage: 'add-developer' },
     };
 
   return (
@@ -76,17 +141,42 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home' }) => {
       <div className="bg-[#082956] text-white text-sm font-light">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <span>The Most Trusted Real Estate Marketplace</span>
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#" onClick={handlePostPropertyClick} className="hover:text-brand-orange transition-colors">Post a Property</a>
-            <a href="#" onClick={(e) => handleAuthClick(e, 'login')} className="hover:text-brand-orange transition-colors">Login</a>
-            <a href="#" onClick={(e) => handleAuthClick(e, 'signup')} className="hover:text-brand-orange transition-colors">Signup</a>
+          
+          <div className="hidden md:flex items-center space-x-6 relative" ref={accountRef}>
+             {/* Account Dropdown Trigger */}
+             <button 
+                onClick={() => setAccountOpen(!accountOpen)}
+                className="flex items-center gap-2 hover:text-brand-orange transition-colors focus:outline-none"
+             >
+                <span>Account</span>
+                <svg className={`w-4 h-4 transition-transform ${accountOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+             </button>
+
+             {/* Account Dropdown Menu */}
+             {accountOpen && (
+                 <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-100 text-gray-800 animate-fadeIn">
+                     {accountOptions.map((option, idx) => (
+                         <button
+                            key={idx}
+                            onClick={() => handleAccountAction(option.action)}
+                            className={`block w-full text-left px-6 py-3 text-sm hover:bg-gray-50 transition-colors ${
+                                option.label === 'Logout' ? 'text-red-500 hover:text-red-700 border-t border-gray-100 mt-1 pt-3' : 'text-gray-700 hover:text-[#0A2B4C]'
+                            }`}
+                         >
+                             {option.label}
+                         </button>
+                     ))}
+                 </div>
+             )}
           </div>
         </div>
       </div>
       
       {/* Middle Bar: Logo and Advert */}
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Logo />
+        <a href="#" onClick={handleLogoClick} className="focus:outline-none">
+            <Logo />
+        </a>
         <div className="hidden md:flex bg-gray-300 items-center justify-center w-full max-w-md lg:max-w-2xl h-20 mx-4 rounded-lg">
             <span className="text-gray-600 font-semibold text-lg text-center">Advert Space by Google</span>
         </div>
@@ -180,10 +270,23 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, activePage = 'home' }) => {
                     );
                 })}
             </nav>
+            {/* Mobile Account Options */}
             <div className="flex flex-col items-center space-y-2 border-t pt-4 pb-4">
-                <a href="#" onClick={(e) => { handlePostPropertyClick(e); setMenuOpen(false); }} className="text-gray-700 hover:text-brand-orange">Post a Property</a>
-                <a href="#" onClick={(e) => {handleAuthClick(e, 'login'); setMenuOpen(false)}} className="text-gray-700 hover:text-brand-orange">Login</a>
-                <a href="#" onClick={(e) => {handleAuthClick(e, 'signup'); setMenuOpen(false)}} className="text-gray-700 hover:text-brand-orange">Signup</a>
+                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Account</span>
+                {accountOptions.map((option, idx) => (
+                    <a 
+                        key={idx}
+                        href="#" 
+                        onClick={(e) => { 
+                            e.preventDefault(); 
+                            handleAccountAction(option.action); 
+                            setMenuOpen(false); 
+                        }} 
+                        className={`text-gray-700 hover:text-brand-orange ${option.label === 'Logout' ? 'text-red-500' : ''}`}
+                    >
+                        {option.label}
+                    </a>
+                ))}
           </div>
         </div>
       )}

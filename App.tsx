@@ -85,6 +85,12 @@ const App: React.FC = () => {
   const [userRole, setUserRole] = useState<string>('guest'); // 'admin', 'editor', 'agent', 'agency', 'developer', 'user', 'guest'
 
   const handleNavigate = (page: string) => {
+    if (page === 'logout') {
+        setUserRole('guest');
+        setCurrentPage('home');
+        window.scrollTo(0, 0);
+        return;
+    }
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
@@ -165,7 +171,7 @@ const App: React.FC = () => {
     if (currentPage === 'all-properties') {
       return (
         <>
-          <Header onNavigate={handleNavigate} activePage={currentPage} />
+          <Header onNavigate={handleNavigate} activePage={currentPage} userRole={userRole} />
           <AllProperties onNavigate={handleNavigate} />
           <Footer onNavigate={handleNavigate} />
         </>
@@ -211,7 +217,7 @@ const App: React.FC = () => {
     // Home Page
     return (
       <>
-        <Header onNavigate={handleNavigate} activePage={currentPage} />
+        <Header onNavigate={handleNavigate} activePage={currentPage} userRole={userRole} />
         <Hero />
         <div className="container mx-auto px-4 relative z-10 -mt-11">
           <div className="w-full lg:w-3/4 mx-auto">
