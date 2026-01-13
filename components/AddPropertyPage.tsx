@@ -9,6 +9,7 @@ interface AddPropertyPageProps {
 
 const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
   const [images, setImages] = useState<string[]>([]);
+  const [areaUnit, setAreaUnit] = useState('sq ft');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
 
@@ -55,7 +56,7 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
   const handleSubmit = (e: React.FormEvent) => {
       e.preventDefault();
       // Logic to submit
-      alert("Property posted successfully!");
+      alert(`Property posted successfully! Size recorded in ${areaUnit}.`);
       onNavigate('all-properties');
   };
 
@@ -145,13 +146,34 @@ const AddPropertyPage: React.FC<AddPropertyPageProps> = ({ onNavigate }) => {
                         <input type="number" min="0" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]" />
                     </div>
                     <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Area (sq ft)</label>
-                        <input type="number" min="0" className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]" />
+                        <div className="flex justify-between items-center mb-2">
+                            <label className="block text-sm font-semibold text-gray-700">Area Size</label>
+                            <select 
+                                value={areaUnit}
+                                onChange={(e) => setAreaUnit(e.target.value)}
+                                className="text-xs border border-gray-300 rounded px-2 py-1 bg-white text-gray-700 focus:outline-none focus:border-[#F9A826] cursor-pointer"
+                            >
+                                <option value="sq ft">sq ft</option>
+                                <option value="sq m">sq m</option>
+                                <option value="acres">acres</option>
+                            </select>
+                        </div>
+                        <div className="relative">
+                            <input 
+                                type="number" 
+                                min="0" 
+                                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]" 
+                                placeholder="0"
+                            />
+                            <span className="absolute right-4 top-3.5 text-gray-400 text-xs font-medium pointer-events-none bg-white px-1">
+                                {areaUnit}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
-                    <textarea rows={5} className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]" placeholder="Describe the property..."></textarea>
+                    <textarea rows={5} className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-[#F9A826]" placeholder="Describe the property features, condition, and surroundings..."></textarea>
                 </div>
             </div>
 
