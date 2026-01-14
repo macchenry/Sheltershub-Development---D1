@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -8,9 +8,19 @@ interface NotFoundPageProps {
 }
 
 const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+        // In a real app, you would pass the query params here
+        onNavigate('search-results');
+    }
+  };
 
   const suggestions = [
     { 
@@ -30,7 +40,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
     },
     { 
         name: 'Contact Support', 
-        page: 'home', 
+        page: 'contact', 
         icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /> 
     },
   ];
@@ -46,16 +56,34 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
             {/* Error Message Section */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 md:p-12 mb-10">
                 <h1 className="text-8xl md:text-9xl font-extrabold text-[#0A2B4C] tracking-tight mb-2">404</h1>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#0A2B4C] mb-3">Oops! The page you’re looking for doesn’t exist.</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-[#0A2B4C] mb-3">Oops! Page not found.</h2>
                 <p className="text-gray-500 text-lg mb-8 max-w-md mx-auto">
-                    It may have been moved, deleted, or never existed.
+                    We can't seem to find the page you are looking for. It might have been removed, renamed, or is temporarily unavailable.
                 </p>
+
+                {/* Search Bar */}
+                <form onSubmit={handleSearch} className="max-w-md mx-auto mb-8 relative">
+                    <input 
+                        type="text" 
+                        placeholder="Search for properties, agents..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg py-3 pl-4 pr-12 text-gray-700 focus:outline-none focus:border-[#F9A826] focus:ring-1 focus:ring-[#F9A826] transition-all"
+                    />
+                    <button 
+                        type="submit"
+                        className="absolute right-1.5 top-1.5 bottom-1.5 bg-[#F9A826] text-white p-2 rounded-md hover:bg-[#d88d15] transition-colors"
+                        aria-label="Search"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button>
+                </form>
 
                 {/* Call-to-Action Section */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button 
                         onClick={() => onNavigate('home')}
-                        className="w-full sm:w-auto py-3 px-8 bg-[#0A2B4C] text-white font-bold rounded-lg hover:bg-[#08223c] shadow-md transition-all hover:shadow-lg"
+                        className="w-full sm:w-auto py-3 px-8 bg-[#0A2B4C] text-white font-bold rounded-lg hover:bg-[#08223c] shadow-md transition-all hover:shadow-lg flex items-center justify-center gap-2"
                     >
                         Go Back Home
                     </button>
@@ -67,17 +95,23 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({ onNavigate }) => {
                     </button>
                 </div>
                 
-                <div className="mt-6">
-                     <button onClick={() => onNavigate('home')} className="text-[#F9A826] font-semibold hover:underline flex items-center justify-center gap-1 mx-auto">
+                {/* Secondary Links */}
+                <div className="mt-8 pt-6 border-t border-gray-100 flex justify-center gap-6 text-sm">
+                     <button onClick={() => onNavigate('contact')} className="text-[#0A2B4C] font-medium hover:text-[#F9A826] hover:underline flex items-center gap-1 transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                         Contact Support
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                     </button>
+                     <span className="text-gray-300">|</span>
+                     <button onClick={() => onNavigate('sitemap')} className="text-[#0A2B4C] font-medium hover:text-[#F9A826] hover:underline flex items-center gap-1 transition-colors">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>
+                        View Sitemap
                      </button>
                 </div>
             </div>
 
             {/* Suggested Links Section */}
             <div>
-                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-6">You might be looking for</h3>
+                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-6">Popular Destinations</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {suggestions.map((item, idx) => (
                         <button 

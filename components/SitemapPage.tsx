@@ -30,6 +30,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onNavigate }) => {
         { name: 'Report Fraud', page: 'report-fraud' },
         { name: 'Terms & Conditions', page: 'terms' },
         { name: 'Editor Registration', page: 'editor-register' },
+        { name: '404 Error Page', page: '404' },
     ]},
     { title: 'Properties', links: [
         { name: 'All Properties', page: 'all-properties' },
